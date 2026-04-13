@@ -33,11 +33,11 @@ const ConnectBox = () => {
         {/* Right Side: Simple Form */}
         <div style={{ background: 'rgba(255,255,255,0.02)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--border-glass)' }}>
           <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} onSubmit={e => e.preventDefault()}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <input type="text" placeholder="Name" style={inputStyle} />
               <input type="email" placeholder="Email" style={inputStyle} />
             </div>
-            <textarea placeholder="Tell me about your project..." rows="4" style={{ ...inputStyle, resize: 'none' }}></textarea>
+            <textarea placeholder="How can I help you?" rows="4" style={{ ...inputStyle, resize: 'none' }}></textarea>
             <button className="btn-premium" style={{ width: '100%', justifyContent: 'center' }}>
               Send Message <Send size={18} />
             </button>
@@ -45,6 +45,11 @@ const ConnectBox = () => {
         </div>
 
       </div>
+      <style>{`
+        @media (max-width: 640px) {
+          .form-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   );
 };
@@ -52,12 +57,13 @@ const ConnectBox = () => {
 const inputStyle = {
   background: 'rgba(255,255,255,0.03)',
   border: '1px solid var(--border-glass)',
-  borderRadius: '8px',
+  borderRadius: '12px',
   padding: '0.8rem 1rem',
   color: 'white',
   fontFamily: 'var(--font-body)',
   outline: 'none',
-  fontSize: '0.9rem'
+  fontSize: '0.9rem',
+  width: '100%'
 };
 
 export default ConnectBox;

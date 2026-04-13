@@ -11,56 +11,107 @@ const LinkedinIcon = () => (
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navLinks = [
+    { name: 'Home', href: '#home' },
+    { name: 'About', href: '#about' },
+    { name: 'Specializations', href: '#projects' },
+    { name: 'Contact', href: '#contact' },
+  ];
+
+  const closeDrawer = () => setIsOpen(false);
+
   return (
-    <nav style={{
-      position: 'fixed',
-      top: 0,
-      width: '100%',
-      zIndex: 100,
-      backgroundColor: scrolled ? 'rgba(13, 14, 21, 0.8)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(12px)' : 'none',
-      borderBottom: scrolled ? '1px solid var(--surface-border)' : 'none',
-      transition: 'all 0.3s ease',
-      padding: '1rem 0'
-    }}>
-      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <a href="#home" style={{ fontSize: '1.5rem', fontWeight: 800, fontFamily: 'var(--font-heading)' }}>
-          Jana<span className="text-gradient">ki</span>
-        </a>
+    <>
+      <nav style={{
+        position: 'fixed',
+        top: 0,
+        width: '100%',
+        zIndex: 100,
+        backgroundColor: scrolled ? 'rgba(2, 6, 23, 0.8)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(12px)' : 'none',
+        borderBottom: scrolled ? '1px solid var(--border-glass)' : 'none',
+        transition: 'all 0.3s ease',
+        padding: '1rem 0'
+      }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 1.5rem', maxWidth: '1200px', margin: '0 auto' }}>
+          <a href="#home" style={{ fontSize: '1.5rem', fontWeight: 800, fontFamily: 'var(--font-heading)' }}>
+            Jana<span className="text-gradient">ki</span>
+          </a>
+          
+          {/* Desktop Menu */}
+          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }} className="desktop-menu">
+            {navLinks.map((link) => (
+              <a 
+                key={link.name} 
+                href={link.href}
+                style={{ fontWeight: 500, fontSize: '0.9rem', color: 'var(--text-secondary)', transition: 'color 0.3s' }}
+                onMouseOver={(e) => e.target.style.color = 'var(--accent-gold)'}
+                onMouseOut={(e) => e.target.style.color = 'var(--text-secondary)'}
+              >
+                {link.name}
+              </a>
+            ))}
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer" style={{ marginLeft: '1rem', color: 'var(--accent-gold)' }}><LinkedinIcon /></a>
+          </div>
+
+          {/* Mobile Hamburger */}
+          <button 
+            className="mobile-toggle" 
+            onClick={() => setIsOpen(true)}
+            style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', display: 'none' }}
+          >
+            <Menu size={28} />
+          </button>
+        </div>
+      </nav>
+
+      {/* Side Drawer Overlay */}
+      <div className={`drawer-overlay ${isOpen ? 'open' : ''}`} onClick={closeDrawer}></div>
+
+      {/* Side Drawer */}
+      <div className={`drawer ${isOpen ? 'open' : ''}`}>
+        <button 
+          onClick={closeDrawer} 
+          style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
+        >
+          <X size={32} />
+        </button>
         
-        {/* Desktop Menu */}
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }} className="desktop-menu">
-          {['Home', 'About', 'Specializations', 'Contact'].map((item) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          {navLinks.map((link) => (
             <a 
-              key={item} 
-              href={`#${item.toLowerCase() === 'specializations' ? 'projects' : item.toLowerCase()}`}
-              style={{ fontWeight: 500 }}
-              onMouseOver={(e) => e.target.style.color = 'var(--accent-gold)'}
-              onMouseOut={(e) => e.target.style.color = 'var(--text-primary)'}
+              key={link.name} 
+              href={link.href} 
+              onClick={closeDrawer}
+              style={{ fontSize: '1.5rem', fontWeight: 600, fontFamily: 'var(--font-heading)' }}
             >
-              {item}
+              {link.name}
             </a>
           ))}
-          <a href="https://github.com" target="_blank" rel="noreferrer" style={{ marginLeft: '1rem' }}><GithubIcon /></a>
-          <a href="https://linkedin.com" target="_blank" rel="noreferrer"><LinkedinIcon /></a>
+        </div>
+
+        <div style={{ marginTop: 'auto' }}>
+          <a href="https://linkedin.com" className="btn-premium" style={{ width: '100%', justifyContent: 'center' }}>
+            <LinkedinIcon /> LinkedIn
+          </a>
         </div>
       </div>
+
       <style>{`
         @media (max-width: 768px) {
           .desktop-menu { display: none !important; }
+          .mobile-toggle { display: block !important; }
         }
       `}</style>
-    </nav>
+    </>
   );
 };
 

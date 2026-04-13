@@ -35,7 +35,7 @@ function App() {
         color: 'var(--text-secondary)',
         fontSize: '0.9rem'
       }}>
-        <p>© {new Date().getFullYear()} Janaki Portfolio. Design refined for 2025.</p>
+        <p>© {new Date().getFullYear()} Kutty BM Janaki. All rights reserved.</p>
       </footer>
     </>
   )
